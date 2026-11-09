@@ -1,0 +1,61 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const messageInput = document.getElementById('message');
+    const errorBox = document.getElementById('errorBox');
+
+    // Ðודףכÿנםמו גûנאזוםטו הכÿ ןנמגונךט email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function showErrors(errors) {
+        if (errors.length === 0) {
+            errorBox.classList.remove('visible');
+            errorBox.innerHTML = '';
+            return;
+        }
+        const list = document.createElement('ul');
+        errors.forEach(function (err) {
+            const li = document.createElement('li');
+            li.textContent = err;
+            list.appendChild(li);
+        });
+        errorBox.innerHTML = '';
+        errorBox.appendChild(list);
+        errorBox.classList.add('visible');
+    }
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault(); // םו ןונוחאדנףזאול סענאםטצף
+
+        const errors = [];
+
+        const nameValue = nameInput.value.trim();
+        const emailValue = emailInput.value.trim();
+        const messageValue = messageInput.value.trim();
+
+        // Ïנמגונךא טלוםט
+        if (nameValue === '') {
+            errors.push('Ïמכו «Èלÿ» םו המכזםמ בûעü ןףסעûל.');
+        }
+
+        // Ïנמגונךא email
+        if (emailValue === '') {
+            errors.push('Ïמכו «Email» םו המכזםמ בûעü ןףסעûל.');
+        } else if (!emailRegex.test(emailValue)) {
+            errors.push('Ïמכו «Email» סמהונזטע םוךמננוךעםûי אהנוס.');
+        }
+
+        // Ïנמגונךא סממבשוםטÿ
+        if (messageValue === '') {
+            errors.push('Ïמכו «Ñממבשוםטו» םו המכזםמ בûעü ןףסעûל.');
+        }
+
+        showErrors(errors);
+
+        if (errors.length === 0) {
+            alert('Äאםםûו פמנלû ףסןורםמ ןנמגונוםû! Îעןנאגךא םא סונגונ ןמךא םו םאסענמוםא');
+            form.reset();
+        }
+    });
+});
